@@ -54,7 +54,15 @@ userRouter.post(
   "/new-user",
   expressAsyncHandler(async (req, res) => {
     const user = req.body;
+    const otpUser = await otpCollection.find({ username: user.username });
 
+    const otpVerified = await bcryptjs.compare(user.otp, otpUser.otp);
+
+    if (!otpVerified) {
+      return res.send({ message: "OTP didn't match", statusCode: 13 });
+    }
+
+    delete user.otp;
     const hashedPassword = await bcryptjs.hash(user.password, 7);
     user.password = hashedPassword;
 
