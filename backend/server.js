@@ -16,9 +16,11 @@ mongoClient
 
     const campaignCollection = dbObj.collection("campaignsCollection");
     const userCollection = dbObj.collection("usersCollection");
+    const otpCollection = dbObj.collection("otpCollection");
 
     app.set("userCollection", userCollection);
     app.set("campaignCollection", campaignCollection);
+    app.set("otpCollection", otpCollection);
 
     console.log("Established Connection with the Database.");
   })

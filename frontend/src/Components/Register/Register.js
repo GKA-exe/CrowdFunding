@@ -20,9 +20,7 @@ function Register() {
       userObj
     );
 
-    console.log(res.data);
-
-    if (res.data.statusCode === 2) {
+    if (res.data.statusCode === 12) {
       navigate("../login");
     } else {
       setErr(res.data.message);
