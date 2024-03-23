@@ -1,11 +1,11 @@
-### User Creation
-POST http://localhost:5000/user/new-user HTTP/1.1
+### User Checking
+POST http://localhost:5000/user/check-user HTTP/1.1
 Content-Type: application/json
 
 {
-    "username": "Navaneeth",
-    "email": "nava@gmail.com",
-    "password": "1234nava"
+    "username": "Navaaaaaaa",
+    "email": "abhijeetmukund@gmail.com",
+    "password": "1234"
 }
 
 ### User Login

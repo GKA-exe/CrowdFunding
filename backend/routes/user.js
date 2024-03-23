@@ -2,19 +2,22 @@ const express = require("express");
 const expressAsyncHandler = require("express-async-handler");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const otpGenerator = require("otp-generator");
 const verifyToken = require("../middlewares/verifyToken");
 const userRouter = express.Router();
+const { transporter, options } = require("./util");
 
-let userCollection;
+let userCollection, otpCollection;
 
 userRouter.use((req, res, next) => {
   userCollection = req.app.get("userCollection");
+  otpCollection = req.app.get("otpCollection");
   next();
 });
 
-// User Creation
+// User checking
 userRouter.post(
-  "/new-user",
+  "/check-user",
   expressAsyncHandler(async (req, res) => {
     const user = req.body;
     const dbUser = await userCollection.findOne({ username: user.username });
@@ -26,6 +29,31 @@ userRouter.post(
     if (dbUser !== null) {
       return res.send({ message: "User Already Exists", statusCode: 1 });
     }
+
+    let otp = otpGenerator.generate(6, {
+      specialChars: false,
+      lowerCaseAlphabets: false,
+      upperCaseAlphabets: false,
+    });
+
+    options.to = user.email;
+    options.text = `Your OTP is ${otp}, please don't share with anyone`;
+
+    const info = await transporter.sendMail(options);
+    console.log(`Message sent with message id ${info.messageId}`);
+
+    otp = await bcryptjs.hash(otp, 7);
+    await otpCollection.insertOne({ username: user.username, otp: otp });
+
+    res.send({ message: "User OK", statusCode: 12 });
+  })
+);
+
+// User Creation
+userRouter.post(
+  "/new-user",
+  expressAsyncHandler(async (req, res) => {
+    const user = req.body;
 
     const hashedPassword = await bcryptjs.hash(user.password, 7);
     user.password = hashedPassword;
