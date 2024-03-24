@@ -8,6 +8,7 @@ import Login from "./Components/Login/Login";
 import AdminDashboard from "./Components/AdminDashboard/AdminDashboard";
 import AdminVerify from "./Components/AdminVerify/AdminVerify";
 import AllCampaigns from "./Components/AllCampaigns/AllCampaigns";
+import VerifyOtp from "./Components/VerifyOtp/VerifyOtp";
 //import AllCampaigns from './Components/AllCampaigns/AllCampaigns';
 
 function App() {
@@ -44,6 +45,10 @@ function App() {
           path: "campaigns",
           element: <AllCampaigns />,
         },
+        {
+          path:"authentication",
+          element:<VerifyOtp/>
+        }
       ],
     },
   ]);
