@@ -62,12 +62,14 @@ userRouter.post(
       return res.send({ message: "OTP didn't match", statusCode: 13 });
     }
 
+    await otpCollection.deleteOne({ username: user.username });
+
     delete user.otp;
     const hashedPassword = await bcryptjs.hash(user.password, 7);
     user.password = hashedPassword;
 
     await userCollection.insertOne(user);
-    res.send({ message: "User Created", statusCode: 2 });
+    return res.send({ message: "User Created", statusCode: 2 });
   })
 );
 
