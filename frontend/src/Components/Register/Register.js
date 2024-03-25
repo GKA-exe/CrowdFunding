@@ -16,12 +16,12 @@ function Register() {
 
   async function handleFormSubmit(userObj) {
     const res = await axios.post(
-      "http://localhost:5000/user/new-user",
+      "http://localhost:5000/user/check-user",
       userObj
     );
 
     if (res.data.statusCode === 12) {
-      navigate("../login");
+      navigate("/authentication", { state: userObj });
     } else {
       setErr(res.data.message);
     }
@@ -86,6 +86,8 @@ function Register() {
               </p>
             )}
           </div>
+
+          {err !== "" && <p className="lead fs-5 text-danger">{err}</p>}
 
           <button
             type="submit "

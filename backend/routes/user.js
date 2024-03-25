@@ -54,7 +54,7 @@ userRouter.post(
   "/new-user",
   expressAsyncHandler(async (req, res) => {
     const user = req.body;
-    const otpUser = await otpCollection.find({ username: user.username });
+    const otpUser = await otpCollection.findOne({ username: user.username });
 
     const otpVerified = await bcryptjs.compare(user.otp, otpUser.otp);
 

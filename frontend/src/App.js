@@ -46,9 +46,9 @@ function App() {
           element: <AllCampaigns />,
         },
         {
-          path:"authentication",
-          element:<VerifyOtp/>
-        }
+          path: "authentication",
+          element: <VerifyOtp />,
+        },
       ],
     },
   ]);
